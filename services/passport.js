@@ -21,7 +21,9 @@ new GoogleStrategy(
   {
     clientID: keys.googleClientID,
     clientSecret: keys.googleClientSecret,
-    callbackURL: 'https://mysterious-basin-65094.herokuapp.com/auth/google/callback'
+    // callbackURL: 'https://mysterious-basin-65094.herokuapp.com/auth/google/callback'
+    callbackURL: '/auth/google/callback',
+    // proxy: true
   }, 
     (accessToken, refreshToken, profile, done) => {
       User.findOne({ googleId: profile.id }).then((existingUser) => {
