@@ -13,8 +13,18 @@ new GoogleStrategy(
     callbackURL: '/auth/google/callback'
   }, 
     (accessToken, refreshToken, profile, done) => {
-      new User({ googleId: profile.id }).save();
-  }
- )
-);
+      User.findOne({ googleId: profile.id }).then((existingUser) => {
+          if (existingUser) {
+            // we already have a record with the given profileID
+            done(null, existingUser);
+          } else {
+            // we dont have a user record with this ID, make a new record
+            new User({ googleId: profile.id })
+              .save()
+              .then(user => done(null, user));
+          }
+        });
+      }
+    )
+ );
 
